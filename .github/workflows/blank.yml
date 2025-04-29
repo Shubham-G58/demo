@@ -34,4 +34,4 @@ jobs:
       - name: Terraform Init & Apply
         run: |
           terraform init
-          terraform destro -auto-approve
+          terraform destroy -auto-approve
