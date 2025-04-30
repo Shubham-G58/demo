@@ -21,7 +21,7 @@ resource "aws_subnet" "public_1" {
 }
  resource "aws_subnet" "public_b" {
   vpc_id                  = aws_vpc.main.id
-   cidr_block              = "10.0.2.0/24"
+   cidr_block              = "10.0.4.0/24"
    availability_zone       = "us-east-1b"        # different AZ than public_a
    map_public_ip_on_launch = true
  }
@@ -144,7 +144,7 @@ resource "aws_instance" "bastion" {
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.public_1.id
   vpc_security_group_ids = [aws_security_group.bastion_sg.id]
-  key_name               = "your-key-name" # Replace with your key
+  key_name               = "bastion" # Replace with your key
 
   tags = {
     Name = "BastionHost"
