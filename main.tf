@@ -160,7 +160,7 @@ resource "aws_instance" "app" {
   subnet_id                   = aws_subnet.private_1.id
   vpc_security_group_ids      = [aws_security_group.app_sg.id]
   associate_public_ip_address = false
-  key_name                    = "your-key-name"
+  key_name                    = "bastion"
 
   user_data = <<-EOF
               #!/bin/bash
