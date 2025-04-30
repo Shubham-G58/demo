@@ -19,6 +19,12 @@ resource "aws_subnet" "public_1" {
   availability_zone = "us-east-1a"
   map_public_ip_on_launch = true
 }
+ resource "aws_subnet" "public_b" {
+  vpc_id                  = aws_vpc.main.id
+   cidr_block              = "10.0.2.0/24"
+   availability_zone       = "us-east-1b"        # different AZ than public_a
+   map_public_ip_on_launch = true
+ }
 
 resource "aws_subnet" "private_1" {
   vpc_id            = aws_vpc.main.id
@@ -74,7 +80,7 @@ resource "aws_security_group" "bastion_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["27.107.32.226/32"]  # Change this
+    cidr_blocks = ["YOUR_PUBLIC_IP/32"] # Change this
   }
 
   egress {
@@ -138,7 +144,7 @@ resource "aws_instance" "bastion" {
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.public_1.id
   vpc_security_group_ids = [aws_security_group.bastion_sg.id]
-  key_name               = "bastion" # Replace with your key
+  key_name               = "your-key-name" # Replace with your key
 
   tags = {
     Name = "BastionHost"
@@ -182,7 +188,7 @@ resource "aws_lb" "app_alb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_sg.id]
-  subnets            = [aws_subnet.public_1.id]
+  subnets            = [aws_subnet.public_1.id,aws_subnet.public_b.id]
 }
 
 resource "aws_lb_target_group" "app_tg" {
